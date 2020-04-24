@@ -1,0 +1,131 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/noppa/text-security/master/dist/text-security.css">
+<style>
+    .password{font-family: text-security-disc;}
+    tbody tr:hover{background-color: rgb(240, 239, 239);}
+</style>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col">
+            <div>
+                <label><h3>User</h3></label>
+                <button type="button" class="btn btn-primary" id="account" onclick="account('create')" style="float: right;">Create</button>
+            </div>
+            <div class="mt-5">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" name="" id="checkAll"></th>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>email</th>
+                            <th>password</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for( let i = 0; i < rows.length; i++ ) { %>
+                            <tr>
+                                <td id="check_td"><input type="checkbox" id="chk_del" name="check" value="<%= rows[i].id %>/<%= rows[i].username %>"></td>
+                                <td onclick="location='/user/account/<%= rows[i].id %> '"><%= rows[i].id %> </td>
+                                <td onclick="location='/user/account/<%= rows[i].id %> '"><%= rows[i].username %> </td>
+                                <td onclick="location='/user/account/<%= rows[i].id %> '"><%= rows[i].email %> </td>
+                                <td class="password"><%= rows[i].password %> </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-right">
+                <a href="#myModal" role="button" class="btn btn-primary" data-toggle="modal" id="del_modal">delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col text-center">
+                        <strong><span id="del_text"></span></strong>을 삭제하시겠습니까?
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="delete">delete</button>
+                <button class="btn btn-primary" data-dismiss="modal">cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+function account(mode, id) {
+    if (mode == 'create') {
+        window.location.href='user/account';
+    } else if (mode == 'edit') {
+        window.location.href='user/account';
+    }
+}
+
+// 체크박스 전체 체크, 체크 해제
+$('#checkAll').click(function () {
+    if($('#checkAll').prop("checked")){
+        $("input[name=check]").prop("checked" , true);
+    } else {
+        $("input[name=check]").prop("checked" , false);
+    }
+});
+
+// 삭제버튼 눌렀을때 모달창으로 가는 기능
+$("#del_modal").on('click', function () {
+    var text = "";
+    var check = $('input[id^="chk_del"]:checked').attr('id');
+    // 체크 된게 있으면 실행
+    if (check) {
+        $('input[id^="chk_del"]:checked').each(function () {
+            title = $(this).val().split('/');
+            $.each(title, function (index, item) {
+                if ((index/2) != 0) {
+                    text += item + ",";
+                }
+            });
+        }); 
+    } else {
+        //체크없으면 삭제 불가능
+        alert("삭제 대상을 선택해주세요")
+        return false;
+    }
+    $("#del_text").text(text.slice(0,-1));
+});
+
+// 체크된거 삭제기능
+var id = "";
+$('#delete').on('click', function () {
+    $('input[id^="chk_del"]:checked').each(function () {
+        id = $(this).val().split('/');
+        $.each(id, function(index, item) {
+            if ((index/2) == 0) {
+                id = item;
+            }
+        });
+        // delete 라우터로 보내기
+        $("input[name=check]").prop("checked", function () {
+            $.ajax({
+                url : "/user/delete/" + id,
+                type : "delete",
+                data : id
+            }).done(function (response) {
+                location.reload();
+            });
+        })
+    });
+});
+</script>

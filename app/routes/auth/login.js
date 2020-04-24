@@ -12,8 +12,11 @@ module.exports = function() {
         res.clearCookie("user");
         res.render("login/login");
     });
-    
-    
+    // GET Logout
+    router.get('/logout', function (req, res) {
+        res.clearCookie("user");
+        res.render("login/login");
+    });
 
     // POST Login 
     router.post('/', function(req, res, next) {
@@ -30,10 +33,10 @@ module.exports = function() {
                     hasher({password:pwd, salt:u_p.salt}, function(err, pass, salt, hash) {
                         if(hash === u_p.password) { //입력한 hash(password)와 DB에 있는 password와 같은지 비교
                             res.cookie("user", secretObj);
-                            res.render("index");
+                            res.send(rows)
                         } else {
-                            console.log("err : " , err);
-                            res.redirect("/")
+                            console.log(err)
+                            res.send(err)
                         }
                     });
                 }

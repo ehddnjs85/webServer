@@ -7,7 +7,7 @@ module.exports = function() {
     var hasher = pbkdf2Password();
 
     //Main
-    router.post("/main", function (req, res) {
+    router.get("/", function (req, res) {
         res.render('index');
     });
 

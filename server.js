@@ -29,7 +29,7 @@ app.use('/', login);
 
 // simple route
 let user = require("./app/routes/routes.js")(app);
-app.use('/', user);
+app.use('/main', user);
 
 // set port, listen for requests
 app.listen(3003, () => {

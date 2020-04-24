@@ -12,6 +12,7 @@
                 <button type="button" class="btn btn-primary" id="account" onclick="account('create')" style="float: right;">Create</button>
             </div>
             <div class="mt-5">
+                <!-- User 리스트 -->
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -26,22 +27,24 @@
                         <% for( let i = 0; i < rows.length; i++ ) { %>
                             <tr>
                                 <td id="check_td"><input type="checkbox" id="chk_del" name="check" value="<%= rows[i].id %>/<%= rows[i].username %>"></td>
-                                <td onclick="location='/user/account/<%= rows[i].id %> '" class="td_id"><%= rows[i].id %> </td>
-                                <td onclick="location='/user/account/<%= rows[i].id %> '"><%= rows[i].username %> </td>
-                                <td onclick="location='/user/account/<%= rows[i].id %> '"><%= rows[i].email %> </td>
-                                <td onclick="location='/user/account/<%= rows[i].id %> '" class="password"><span>*********</span> </td>
+                                <td onclick="location='/main/user/account/<%= rows[i].id %> '" class="td_id"><%= rows[i].id %> </td>
+                                <td onclick="location='/main/user/account/<%= rows[i].id %> '"><%= rows[i].username %> </td>
+                                <td onclick="location='/main/user/account/<%= rows[i].id %> '"><%= rows[i].email %> </td>
+                                <td onclick="location='/main/user/account/<%= rows[i].id %> '" class="password"><span>*********</span> </td>
                             </tr>
                         <% } %>
                     </tbody>
                 </table>
             </div>
             <div class="text-right">
-                <a href="#myModal" role="button" class="btn btn-primary" data-toggle="modal" id="del_modal">delete</a>
+                <a role="button" class="btn btn-primary" id="back">Back</a>
+                <a href="#myModal" role="button" class="btn btn-primary" data-toggle="modal" id="del_modal">Delete</a>
             </div>
         </div>
     </div>
 </div>
 
+<!-- 삭제 확인 Modal -->
 <div id="myModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -129,5 +132,18 @@ $('#delete').on('click', function () {
         })
     });
 });   
+$(document).ready(function() {
+    if (!document.cookie.includes('user')) {
+        window.location.href="/";
+    }
+    
+    setInterval(function () {
+        if (!document.cookie.includes('uuid')) {
+            
+            window.location.href="/";
+        }
+    }, 60 * 10000);
+});
+    
 
 </script>

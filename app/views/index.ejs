@@ -1,11 +1,12 @@
 <div class="container">
-    <div class="row">
+    <div class="row mt-5">
         <div class="col">
             <div>
                 <h1>INDEX</h1>
+                <h5 style="float: right;" role="button" class="btn btn-primary" id="logout">logout</h5>
             </div>
             <div>
-                <button type="button" class="btn btn-primary" onclick="location.href='/user'">users</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='main/user'">users</button>
                 <button type="button" class="btn btn-primary">devices</button>
                 <button type="button" class="btn btn-primary">setting</button>
             </div>
@@ -14,23 +15,20 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-        checkCookie();
-    });
-    
-    // Get Cookie
-    var getCookie = function(name) {
-        var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-        return value? value[2] : null;
-    };
-    
-    // Check Cookie
-    function checkCookie() {
-        var cookie = getCookie('user');
-    
-        if (cookie === null) {
-            location.replace('/login');	
-        }
+$(document).ready(function() {
+    if (!document.cookie.includes('user')) {
+        window.location.href="/";
     }
     
+    setInterval(function () {
+        if (!document.cookie.includes('uuid')) {
+            
+            window.location.href="/";
+        }
+    }, 60 * 10000);
+});
+    
+$('#logout').click(function () {
+    window.location.href='/logout';
+})
 </script>

@@ -4,7 +4,7 @@
             <div class="card card-signin my-5">
                 <div class="card-body">
                     <h5 class="card-title text-center">Login</h5>
-                    <p class="text-center" style="display:none;">You can't access the administration panel.</p>
+                    <p class="text-center wrong" style="display:none;">You can't access the administration panel.</p>
                     <form id="loginForm" action="/" method="post" novalidate>
                         <!-- User name -->
                         <div class="form-label-group">
@@ -28,20 +28,44 @@
     </div>
 </div>
 
-<div class="modal fade" id="loginInfoModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
-    <div class="modal-sm modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border: 1pt solid black"> 
-            <div class="modal-header">
-                <h4 class="modal-info-title" id="loginInfoModalTitle">Information</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body text-center">
-                <i style="font-size: 30px;" class="mdi dripicons-warning"></i>
-                <b><div class="text-break" id="div-select-info"></div></b>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
+<script>
+
+$('#signIn').click(function () {
+    var uname = $('#username').val();
+    var pwd = $('#password').val();
+
+    data = {
+        username : uname,
+        password : pwd
+    }
+
+    $.ajax({
+        url: "/",
+        type : "POST",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data : JSON.stringify(data),
+        success: function(rows) {
+            location.href= "/main";
+        },
+        error: function(err) {
+            var result = $('input[type=text]').val();
+            var result2 = $('input[type=password]').val();
+            if (!result) {
+                $('.wrong').css({"display":"block", "color":"red"});
+                $('#username').css("borderColor", "red");
+            }
+            else if (!result2) {
+                $('.wrong').css({"display":"block", "color":"red"});
+                $('#password').css("borderColor", "red");
+            }
+            else if(!result && !result2) {
+                $('.wrong').css({"display":"block", "color":"red"});
+                $('#password').css("borderColor", "red");
+            } else {
+                alert("아이디 패스워드가 틀렸습니다")
+            }
+        }
+    });
+});
+</script>

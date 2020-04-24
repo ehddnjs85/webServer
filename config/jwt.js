@@ -1,5 +1,4 @@
+let jwt = require("jsonwebtoken");
 let jwtObj = {};
-
-jwtObj.secret = "apple"
-
+jwt.sign ({test : 'test'},jwtObj.secret = "apple",{subject : "jwtToken",expiresIn : "5m",issuer : "pang"});
 module.exports = jwtObj

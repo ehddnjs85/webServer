@@ -3,7 +3,6 @@ module.exports = function() {
     const router = express.Router();
     const conn = require('../../../config/db.config.js')();
     const dbconn = conn.init(); 
-    let jwt = require("jsonwebtoken");
     let secretObj = require("../../../config/jwt");
     var pbkdf2Password = require('pbkdf2-password');
     var hasher = pbkdf2Password();
@@ -14,32 +13,32 @@ module.exports = function() {
         res.render("login/login");
     });
     
+    
+
     // POST Login 
-    router.post('/login', function(req, res, next) {
+    router.post('/', function(req, res, next) {
 
-        var token = jwt.sign ({test : '1111'},secretObj.secret,
-        {
-            subject : "jwtToken",
-            expiresIn : "10",
-            issuer : "pang"
-        });
+        uname = req.body.username;
+        pwd = req.body.password;
 
-
-        hasher({password:req.body.password}, function(err, pass, salt, hash) {
-            username = req.body.username;
-            password = hash;
-            let sql = 'SELECT username, password FROM user';
-            dbconn.query(sql, function (err, rows) {
-                for (var i = 0; i < rows.length; i++){
-                    if (rows[i].username === req.body.username && hash === password) {
-                        res.cookie("user", token);
-                        res.render("index");
-                        return true;
-                    } 
+        let sql = 'SELECT * FROM user';
+        dbconn.query(sql, function (err, rows) {
+            for (var i = 0; i < rows.length; i++){
+                if (rows[i].username === uname) {
+                    var u_p = rows[i];
+                    //입력된 패스워드와 DB에 저장된 salt를 합쳐 hash 생성
+                    hasher({password:pwd, salt:u_p.salt}, function(err, pass, salt, hash) {
+                        if(hash === u_p.password) { //입력한 hash(password)와 DB에 있는 password와 같은지 비교
+                            res.cookie("user", secretObj);
+                            res.render("index");
+                        } else {
+                            console.log("err : " , err);
+                            res.redirect("/")
+                        }
+                    });
                 }
-            })
+            }
         });
     });
-
     return router;
 };

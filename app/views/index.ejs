@@ -12,3 +12,25 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        checkCookie();
+    });
+    
+    // Get Cookie
+    var getCookie = function(name) {
+        var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+        return value? value[2] : null;
+    };
+    
+    // Check Cookie
+    function checkCookie() {
+        var cookie = getCookie('user');
+    
+        if (cookie === null) {
+            location.replace('/login');	
+        }
+    }
+    
+</script>

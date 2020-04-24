@@ -38,33 +38,29 @@ module.exports = function() {
     router.get("/user/account", function (req, res) {
         res.render("user/account", {rows : ""} );
     });
-
     
     router.post("/user/account", function (req, res) {
+        hasher({password:req.body.password}, function(err, pass, salt, hash) { //생성할때 패스워드를 hash로 바꿈
 
-        hasher({password:req.body.password}, function(err, pass, salt, hash) {
-            username = req.body.username;
-            email = req.body.email;
-            password = hash;
-            salt = salt;
+            var user = {
+                id : Math.random().toString(36).substr(2,9), //36자리 문자 코드 (a-z, 0~9)중 랜덤으로 뽑고 Math.random은 0.xxxx로 시작하므로 2번째부터 9번째 까지 출력
+                username : req.body.username,
+                email : req.body.email,
+                password : hash,
+                salt : salt,
+                role : req.body.role
+            }
 
             let sql = "INSERT INTO user SET ?";
-            dbconn.query(sql, {username, email, password}, function (err, rows) {
+            dbconn.query(sql, user, function (err, rows) {
                 if(err) {
                     res.status(500).send('Internal Server Error');
+                    console.log("err : " , err)
                 } else {
                     res.send(rows);
                 }
             });
-        });
-
-        // let data = {
-        //     username : username,
-        //     email : email,
-        //     password : password
-        // };
-
-        
+        });        
     });
 
     // Edit
@@ -79,21 +75,24 @@ module.exports = function() {
 
     router.put("/user/account/:id", function (req, res) {
         let id = req.params.id;
+        hasher({password:req.body.password}, function(err, pass, salt, hash) { //생성할때 패스워드를 hash로 바꿈
+        
+            let data = {
+                username : req.body.username,
+                email : req.body.email,
+                password : hash,
+                salt : salt
+            };
 
-        let data = {
-            username : req.body.username,
-            email : req.body.email,
-            password : req.body.password,
-        };
+            let sql = 'UPDATE user SET ? WHERE id = ?';
 
-        let sql = 'UPDATE user SET ? WHERE id = ?';
-
-        dbconn.query(sql, [data, id], function (err, rows) {
-            if (err) {
-                res.status(500).send('Internal Server Error');
-            } else {
-                res.send(rows);
-            }
+            dbconn.query(sql, [data, id], function (err, rows) {
+                if (err) {
+                    res.status(500).send('Internal Server Error');
+                } else {
+                    res.send(rows);
+                }
+            });
         });
     })
 

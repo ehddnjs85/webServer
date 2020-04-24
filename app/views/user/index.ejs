@@ -2,6 +2,7 @@
 <style>
     .password{font-family: text-security-disc;}
     tbody tr:hover{background-color: rgb(240, 239, 239);}
+    td{text-overflow: ellipsis;overflow: hidden;white-space: nowrap; table-layout:fixed;}
 </style>
 <div class="container">
     <div class="row mt-5">
@@ -25,10 +26,10 @@
                         <% for( let i = 0; i < rows.length; i++ ) { %>
                             <tr>
                                 <td id="check_td"><input type="checkbox" id="chk_del" name="check" value="<%= rows[i].id %>/<%= rows[i].username %>"></td>
-                                <td onclick="location='/user/account/<%= rows[i].id %> '"><%= rows[i].id %> </td>
+                                <td onclick="location='/user/account/<%= rows[i].id %> '" class="td_id"><%= rows[i].id %> </td>
                                 <td onclick="location='/user/account/<%= rows[i].id %> '"><%= rows[i].username %> </td>
                                 <td onclick="location='/user/account/<%= rows[i].id %> '"><%= rows[i].email %> </td>
-                                <td class="password"><%= rows[i].password %> </td>
+                                <td onclick="location='/user/account/<%= rows[i].id %> '" class="password"><span>*********</span> </td>
                             </tr>
                         <% } %>
                     </tbody>
@@ -127,5 +128,6 @@ $('#delete').on('click', function () {
             });
         })
     });
-});
+});   
+
 </script>

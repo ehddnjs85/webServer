@@ -23,5 +23,6 @@ module.exports = function() {
         });
       }
     }
+    
     return dbconn;
   };

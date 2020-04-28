@@ -68,9 +68,7 @@
     </div>
 </div>
 
-
 <script>
-
 function account(mode, id) {
     if (mode == 'create') {
         window.location.href='user/account';
@@ -136,13 +134,6 @@ $(document).ready(function() {
     if (!document.cookie.includes('user')) {
         window.location.href="/";
     }
-    
-    setInterval(function () {
-        if (!document.cookie.includes('uuid')) {
-            
-            window.location.href="/";
-        }
-    }, 60 * 10000);
 });
     
 

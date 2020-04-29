@@ -34,7 +34,7 @@ module.exports = function() {
         })
     });
 
-    // Create
+    // User Create
     router.get("/user/account", function (req, res) {
         res.render("user/account", {rows : ""} );
     });
@@ -63,7 +63,7 @@ module.exports = function() {
         });        
     });
 
-    // Edit
+    // User Edit
     router.get("/user/account/:id", function (req, res) {
         let id = req.params.id;
         let sql = 'SELECT * FROM user WHERE id = ?'
@@ -96,7 +96,7 @@ module.exports = function() {
         });
     })
 
-    // Delete
+    // User Delete
     router.delete('/user/delete/:id', function (req, res) {
         let id = req.params.id;
         let sql = 'DELETE FROM user WHERE id = ?'
@@ -109,5 +109,17 @@ module.exports = function() {
             }
         })
     })
+
+    //Devices List
+    router.get('/devices', function (req, res) {
+        res.render("devices/index");
+    })
+
+    //Devices Info List
+    router.get('/devices/info', function (req, res) {
+        res.render("devices/info");
+    });
+
+
     return router;
 };

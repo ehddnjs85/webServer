@@ -35,7 +35,7 @@ module.exports = function() {
                             res.cookie("user", secretObj);
                             res.send(rows)
                         } else {
-                            console.log(err)
+                            console.log("error : " , err)
                             res.send(err)
                         }
                     });

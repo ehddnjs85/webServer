@@ -1,0 +1,149 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form>
+                <table class="mb-5">
+                    <tbody>
+                        <tr>
+                            <td>일련번호</td>
+                            <td><input type="text" id="no" value="0001-2008-0000-0001" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>디바이스명</td>
+                            <td>
+                                <select id="deviceName">
+                                    <option>RLCT001</option>
+                                    <option>RLCT002</option>
+                                    <option>RLCT003</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>서비스망</td>
+                            <td>
+                                <select id="serviceNet">
+                                    <option>LGT</option>
+                                    <option>SKT</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>서비스명</td>
+                            <td>
+                                <select id="serviceName">
+                                    <option>금강고속</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>접속서버:Port</td>
+                            <td><input type="text" id="port" value="https://gather.kumkangexpress.kumhotire.com:10200" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>F/W버전</td>
+                            <td><input type="text" id="version" value="1.01" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>장치상태</td>
+                            <td><input type="text" id="status" value="Intialized" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>생성일</td>
+                            <td><input type="text" id="made" value="2020-04-20 13:01:01" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>차량번호</td>
+                            <td><input type="text" id="carNo"></td>
+                        </tr>
+                        <tr>
+                            <td>차량타입</td>
+                            <td>
+                                <select id="carType">
+                                    <option>버스</option>
+                                    <option>트럭</option>
+                                    <option>SUV</option>
+                                    <option>승용</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>타이어크기</td>
+                            <td><input type="text" id="tire"></td>
+                        </tr>
+                        <tr>
+                            <td>계절보정여부</td>
+                            <td>
+                                <select id="correction">
+                                    <option>보정안함</option>
+                                    <option>보정</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <h5>센서정보</h5>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>SenserID</th>
+                            <th>RFID</th>
+                            <th>위치</th>
+                            <th>마모</th>
+                            <th>교체시기</th>
+                            <th>비용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" style="border: none; border-bottom: rgb(185, 185, 185) 1px solid;"></td>
+                            <td></td>
+                            <td><input type="text" style="border: none; border-bottom: rgb(185, 185, 185) 1px solid;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="text-right">
+                <button class="btn btn-primary" id="save">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var no = $("#no").val()
+    var dev_name = $("#deviceName option:selected").val()
+    var serv_net = $("#serviceNet option:selected").val()
+    var serv_name = $("#serviceName option:selected").val()
+    var port = $("#port").val()
+    var version = $("#version").val()
+    var status = $("#status").val()
+    var made = $("#made").val()
+    var carNo = $("#carNo").val()
+    var carType = $("#carType option:selected").val()
+    var tire = $("#tire").val()
+    var correction = $("#correction option:selected").val()
+ 
+    var data = {
+        no,dev_name,serv_net,serv_name,port,version,status,made,carNo,carType,tire,correction
+    }
+
+    $("#save").on('click', function () {
+        $.ajax({
+            url : "/main/devices/info",
+            type : "post",
+            dataType : "json",
+            data : data,
+            success : function (result) {
+                console.log("1")
+            },
+            error : function (result) {
+                console.log("2")
+            }
+        })
+    })
+</script>

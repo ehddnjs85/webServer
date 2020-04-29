@@ -7,7 +7,7 @@
             </div>
             <div>
                 <button type="button" class="btn btn-primary" onclick="location.href='main/user'">users</button>
-                <button type="button" class="btn btn-primary">devices</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='main/devices'">devices</button>
                 <button type="button" class="btn btn-primary">setting</button>
             </div>
         </div>
@@ -19,13 +19,6 @@ $(document).ready(function() {
     if (!document.cookie.includes('user')) {
         window.location.href="/";
     }
-    
-    setInterval(function () {
-        if (!document.cookie.includes('uuid')) {
-            
-            window.location.href="/";
-        }
-    }, 60 * 10000);
 });
     
 $('#logout').click(function () {

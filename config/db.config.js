@@ -2,10 +2,10 @@ module.exports = function() {
     var mysql = require('mysql');
   
     var conn = {
-      host: "192.168.10.9",
-      user: "tmuser",
-      password: "tmuser000",
-      database: "tpms",
+      host: "",
+      user: "",
+      password: "",
+      database: "",
       multipleStatements : true 
     }
     
